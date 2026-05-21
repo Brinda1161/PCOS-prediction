@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Risk Assessment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .assessment-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="/">PCOS Predictor</a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <span class="nav-link text-white">Welcome, {{ username }}!</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="assessment-card">
+            <div class="card-header text-center">
+                <h4 class="mb-0">PCOS Risk Assessment</h4>
+                <p class="mb-0 mt-2">Please fill in your health information below</p>
+            </div>
+            <div class="card-body p-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('predict') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" required min="10" max="60">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="bmi" class="form-label">BMI Category</label>
+                            <select class="form-select" id="bmi" name="bmi" required>
+                                <option value="">Select BMI category</option>
+                                <option value="Underweight">Underweight (< 18.5)</option>
+                                <option value="Normal">Normal (18.5 - 24.9)</option>
+                                <option value="Overweight">Overweight (25 - 29.9)</option>
+                                <option value="Obese">Obese (≥ 30)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="menstrual" class="form-label">Menstrual Cycle</label>
+                            <select class="form-select" id="menstrual" name="menstrual" required>
+                                <option value="">Select cycle type</option>
+                                <option value="Regular">Regular (21-35 days)</option>
+                                <option value="Irregular">Irregular</option>
+                                <option value="Absent">Absent</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="family_history" class="form-label">Family History of PCOS</label>
+                            <select class="form-select" id="family_history" name="family_history" required>
+                                <option value="">Select option</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="hirsutism" class="form-label">Excess Hair Growth (Hirsutism)</label>
+                            <select class="form-select" id="hirsutism" name="hirsutism" required>
+                                <option value="">Select option</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="acne" class="form-label">Severe Acne</label>
+                            <select class="form-select" id="acne" name="acne" required>
+                                <option value="">Select option</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="waist_hip_ratio" class="form-label">Waist-Hip Ratio</label>
+                            <input type="number" step="0.01" class="form-control" id="waist_hip_ratio" name="waist_hip_ratio" placeholder="e.g., 0.85">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="amh" class="form-label">AMH Level (ng/mL)</label>
+                            <input type="number" step="0.1" class="form-control" id="amh" name="amh" placeholder="e.g., 4.5">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="fasting_glucose" class="form-label">Fasting Glucose (mg/dL)</label>
+                            <input type="number" class="form-control" id="fasting_glucose" name="fasting_glucose" placeholder="e.g., 95">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="fasting_insulin" class="form-label">Fasting Insulin (μU/mL)</label>
+                            <input type="number" class="form-control" id="fasting_insulin" name="fasting_insulin" placeholder="e.g., 12">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Calculate Risk</button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

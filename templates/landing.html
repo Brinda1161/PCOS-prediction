@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Risk Assessment System - Comprehensive Care Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --primary-light: rgba(74, 111, 165, 0.1);
+            --secondary-color: #6b8cae;
+            --accent-color: #ff7e5f;
+            --accent-light: rgba(255, 126, 95, 0.1);
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --transition: all 0.3s ease-in-out;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Navigation */
+        .navbar {
+            transition: var(--transition);
+            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar.scrolled {
+            background-color: white !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            padding: 10px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            color: var(--dark-text) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 60%;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        
+        .btn-login {
+            color: var(--primary-color) !important;
+            border: 1px solid var(--primary-color);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem !important;
+            margin-right: 10px;
+        }
+        
+        .btn-login:hover {
+            background-color: var(--primary-color);
+            color: white !important;
+        }
+        
+        .btn-login:hover::after {
+            width: 0 !important;
+        }
+        
+        .btn-register {
+            background-color: var(--accent-color) !important;
+            color: white !important;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem !important;
+            border: none;
+        }
+        
+        .btn-register:hover {
+            background-color: #ff6a45 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.3);
+        }
+        
+        .btn-register:hover::after {
+            width: 0 !important;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.95) 0%, rgba(107, 140, 174, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 10rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: var(--light-bg);
+            transform: skewY(-2deg);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff6a45;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(255, 126, 95, 0.4);
+            color: white;
+        }
+        
+        .btn-outline-light {
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid white;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-outline-light:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Trust Indicators */
+        .trust-section {
+            background-color: white;
+            padding: 2rem 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .trust-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .trust-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .trust-text {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        /* Section Styling */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        .section-title-center {
+            text-align: center;
+            display: block;
+        }
+        
+        .section-title-center::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+        
+        /* Feature Cards */
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            height: 100%;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .feature-card:hover .feature-icon {
+            background: var(--accent-color);
+        }
+        
+        .feature-card:hover .feature-icon i {
+            color: white;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .feature-link i {
+            transition: var(--transition);
+            margin-left: 5px;
+        }
+        
+        .feature-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .feature-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Symptom Tracker Section */
+        .tracker-section {
+            background-color: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .tracker-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+        
+        .tracker-item:hover {
+            transform: translateX(10px);
+            background: var(--primary-light);
+        }
+        
+        .tracker-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .tracker-icon i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+        
+        .tracker-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tracker-content p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        /* Testimonials */
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            height: 100%;
+            border-left: 4px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #495057;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .testimonial-avatar i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .testimonial-info h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .testimonial-info p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 3rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-cta {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .btn-cta-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-cta-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-icon:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        /* Animations */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 126, 95, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-section {
+                padding: 8rem 0 4rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .cta-section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .tracker-section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages" style="position: fixed; top: 80px; right: 20px; z-index: 9999;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show animate__animated animate__fadeInRight" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('landing') }}">
+                <i class="fas fa-heartbeat me-2"></i>PCOS Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-login" href="{{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-register" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6 animate__animated animate__fadeInUp">
+                    <h1 class="hero-title">Comprehensive PCOS Management & Risk Assessment</h1>
+                    <p class="hero-subtitle">Track symptoms, assess risks, and get personalized health recommendations for Polycystic Ovary Syndrome. Join thousands of women taking control of their health.</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('assessment') }}" class="btn-primary pulse">
+                            <i class="fas fa-play me-2"></i>Start Assessment
+                        </a>
+                        <a href="{{ url_for('learn_more') }}" class="btn-outline-light">
+                            <i class="fas fa-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block animate__animated animate__fadeIn">
+                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" class="img-fluid rounded-3 shadow-lg floating" alt="Healthcare illustration">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <div class="trust-number">10,000+</div>
+                        <div class="trust-text">Women Empowered</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <div class="trust-number">98%</div>
+                        <div class="trust-text">Accuracy Rate</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <div class="trust-number">50+</div>
+                        <div class="trust-text">Health Metrics</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-item">
+                        <div class="trust-number">24/7</div>
+                        <div class="trust-text">Support Available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container my-5 py-5" id="features">
+        <div class="text-center mb-5">
+            <h2 class="section-title section-title-center">Why Choose Our Platform?</h2>
+            <p class="section-subtitle">Comprehensive tools and features designed specifically for PCOS management and care</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- AI Risk Assessment -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Risk Assessment</h3>
+                    <p>Our advanced machine learning algorithm analyzes multiple factors to provide accurate PCOS risk assessment.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Rotterdam Criteria based</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>98% accuracy rate</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Personalized reports</li>
+                    </ul>
+                    <a href="{{ url_for('predict') }}" class="feature-link">
+                        Try Assessment <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Symptom Tracker -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Symptom Tracker</h3>
+                    <p>Monitor and track all PCOS-related symptoms in one intuitive dashboard.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Cycle tracking</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Mood & energy logs</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Weight & BMI trends</li>
+                    </ul>
+                    <a href="{{ url_for('symptoms') }}" class="feature-link">
+                        Start Tracking <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Personalized Care -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="feature-title">Personalized Care Plans</h3>
+                    <p>Get customized diet, exercise, and lifestyle recommendations based on your profile.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Custom meal plans</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Exercise routines</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Lifestyle tips</li>
+                    </ul>
+                    <a href="{{ url_for('recommend') }}" class="feature-link">
+                        View Plans <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Lab Integration -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3 class="feature-title">Lab Test Integration</h3>
+                    <p>Upload and understand your lab results with easy-to-read interpretations.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Hormone level analysis</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Thyroid function</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Glucose monitoring</li>
+                    </ul>
+                    <a href="#" class="feature-link">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Community Support -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Community Support</h3>
+                    <p>Connect with others on the same journey and share experiences.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Support groups</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Expert Q&A sessions</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Success stories</li>
+                    </ul>
+                    <a href="#" class="feature-link">
+                        Join Community <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Educational Resources -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="feature-title">Educational Library</h3>
+                    <p>Access comprehensive resources about PCOS management and research.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Symptom guides</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Treatment options</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Latest research</li>
+                    </ul>
+                    <a href="{{ url_for('blog') }}" class="feature-link">
+                        Explore Resources <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Symptom Tracker Preview -->
+    <section class="container tracker-section" id="about">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-title">Comprehensive Symptom Tracking</h2>
+                <p class="lead">Monitor all aspects of your PCOS journey in one intuitive dashboard.</p>
+                
+                <div class="tracker-item">
+                    <div class="tracker-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="tracker-content">
+                        <h4>Menstrual Cycle Tracking</h4>
+                        <p>Track periods, flow, and irregularities with predictive analytics</p>
+                    </div>
+                </div>
+                
+                <div class="tracker-item">
+                    <div class="tracker-icon">
+                        <i class="fas fa-weight"></i>
+                    </div>
+                    <div class="tracker-content">
+                        <h4>Weight & BMI Monitoring</h4>
+                        <p>Monitor trends and set achievable health goals</p>
+                    </div>
+                </div>
+                
+                <div class="tracker-item">
+                    <div class="tracker-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="tracker-content">
+                        <h4>Hormonal Symptoms</h4>
+                        <p>Log acne, hair growth, and other androgen-related changes</p>
+                    </div>
+                </div>
+                
+                <div class="tracker-item">
+                    <div class="tracker-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="tracker-content">
+                        <h4>Mood & Energy Levels</h4>
+                        <p>Track emotional patterns and fatigue levels</p>
+                    </div>
+                </div>
+                
+                <a href="{{ url_for('symptoms') }}" class="btn-primary mt-4">
+                    <i class="fas fa-plus-circle me-2"></i>Start Tracking Now
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" 
+                     class="img-fluid rounded-3 shadow-lg floating" 
+                     alt="Woman tracking health metrics">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="container my-5 py-5" id="testimonials">
+        <div class="text-center mb-5">
+            <h2 class="section-title section-title-center">What Our Users Say</h2>
+            <p class="section-subtitle">Real stories from women who have taken control of their PCOS journey</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <i class="fas fa-quote-left text-primary me-2" style="opacity: 0.3;"></i>
+                        This platform helped me understand my symptoms better and connect with the right specialists. The risk assessment was accurate and eye-opening.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>Sarah Johnson</h5>
+                            <p>Diagnosed 2023</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <i class="fas fa-quote-left text-primary me-2" style="opacity: 0.3;"></i>
+                        The symptom tracker is a game-changer. I can see patterns I never noticed before and share detailed reports with my doctor.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>Maria Garcia</h5>
+                            <p>PCOS Warrior</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <i class="fas fa-quote-left text-primary me-2" style="opacity: 0.3;"></i>
+                        Finally found a comprehensive tool that addresses all aspects of PCOS. The personalized recommendations really work!
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>Emily Chen</h5>
+                            <p>In remission</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Take Control of Your Health?</h2>
+            <p class="cta-text">Join thousands of women who have gained clarity and control over their PCOS symptoms with our comprehensive platform.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('register') }}" class="btn-cta">
+                    <i class="fas fa-user-plus me-2"></i>Start Your Journey
+                </a>
+                <a href="{{ url_for('predict') }}" class="btn-cta-outline">
+                    <i class="fas fa-play me-2"></i>Try Free Assessment
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5>PCOS Care</h5>
+                    <p class="mt-3" style="color: rgba(255,255,255,0.7);">Your comprehensive solution for PCOS risk assessment, symptom tracking, and personalized management. Empowering women with knowledge and tools for better health.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5>Resources</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">PCOS Guide</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h5>Contact Us</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Health Street, Medical City, MC 12345</li>
+                        <li><i class="fas fa-phone-alt me-2"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope me-2"></i> support@pcoscare.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Mon-Fri: 9:00 AM - 5:00 PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; {{ now.year }} PCOS Care. All rights reserved. | Made with <i class="fas fa-heart text-danger"></i> for women's health</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Navbar scroll effect
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar').addClass('scrolled');
+            } else {
+                $('.navbar').removeClass('scrolled');
+            }
+            
+            // Back to top button
+            if ($(this).scrollTop() > 300) {
+                $('#backToTop').addClass('show');
+            } else {
+                $('#backToTop').removeClass('show');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        $('a[href*="#"]').on('click', function(e) {
+            if (this.hash !== '') {
+                e.preventDefault();
+                
+                var hash = this.hash;
+                
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top - 70
+                }, 800, function() {
+                    window.location.hash = hash;
+                });
+            }
+        });
+
+        // Back to top button
+        $('#backToTop').click(function(e) {
+            e.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 500);
+        });
+
+        // Auto-hide flash messages
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+
+        // Active nav link on scroll
+        $(window).scroll(function() {
+            var scrollDistance = $(window).scrollTop();
+            
+            $('section').each(function(i) {
+                if ($(this).position().top <= scrollDistance + 100) {
+                    $('.navbar-nav a.active').removeClass('active');
+                    $('.navbar-nav a').eq(i).addClass('active');
+                }
+            });
+        }).scroll();
+    </script>
+</body>
+</html>
